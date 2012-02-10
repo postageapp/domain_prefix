@@ -18,7 +18,7 @@ class TestDomainPrefix < Test::Unit::TestCase
       'example.com.au' => %w[ example.com.au com.au ],
       'example.bar.jp' => %w[ bar.jp jp ],
       'example.bar.hokkaido.jp' =>%w[ example.bar.hokkaido.jp bar.hokkaido.jp ],
-      'example.metro.tokyo.jp' => %w[ example.metro.tokyo.jp metro.tokyo.jp ]
+      'example.metro.tokyo.jp' => %w[ metro.tokyo.jp tokyo.jp ]
     ) do |domain|
       [
         DomainPrefix.registered_domain(domain),

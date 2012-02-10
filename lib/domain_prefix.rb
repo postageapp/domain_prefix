@@ -1,17 +1,63 @@
 # encoding: UTF-8
 
 module DomainPrefix
-  class TreeHash < Hash
+  SEPARATOR = '.'.freeze
+
+  class Tree < Hash
     def initialize
       super do |h, k|
-        h[k] = TreeHash.new
+        h[k] = Tree.new
       end
     end
     
-    def find_domain(domain)
-      domain.split('.').inject(self) do |h, component|
-        h and h.key?(component) ? h[component] : nil
+    def insert(path)
+      path.split(SEPARATOR).reverse.inject(self) do |tree, component|
+        tree[component]
       end
+      
+      self
+    end
+    
+    def follow(path)
+      path = path.to_s.split(SEPARATOR) unless (path.is_a?(Array))
+      prefix = [ ]
+      tree = self
+      
+      path.reverse.each do |component|
+        if (!component or component.empty?)
+          return
+        end
+
+        if (tree.key?(component))
+          # This component is REQUIRED and IS considered part of the actual
+          # prefix.
+          prefix.unshift(component)
+
+          # Further testing is necessary to determine if a more specific
+          # match can be made.
+          tree = tree[component]
+        elsif (tree.key?("!#{component}"))
+          # This component is REQUIRED but IS NOT considered part of the
+          # actual prefix.
+          return prefix
+        elsif (tree.key?("*"))
+          # This component is REQUIRED and IS considered part of the actual
+          # prefix.
+          prefix.unshift(component)
+          
+          # No further testing is required as wildcards in the middle of
+          # TLDs are not supported.
+          
+          return prefix
+        else
+          # If no specific match can be found, then testing is done.
+          return prefix.empty? ? nil : prefix
+        end
+      end
+      
+      # Getting here means the matching process failed because path was not
+      # sufficiently long.
+      return
     end
   end
   
@@ -25,40 +71,9 @@ module DomainPrefix
     [ -d.length, d ]
   end.freeze
   
-  TLD_TREE = TLD_NAMES.inject(TreeHash.new) do |h, name|
-    name.split('.').reverse.inject(h) do |_h, component|
-      case (component)
-      when '*'
-        _h
-      when /!(.*)/
-        _h[$1]
-      else
-        _h[component]
-      end
-    end
-
-    h
+  TLD_TREE = TLD_NAMES.inject(Tree.new) do |t, name|
+    t.insert(name)
   end.freeze
-
-  PREFIX_SPEC = Regexp.new(
-    '^(' + TLD_NAMES.collect do |d|
-      Regexp.escape(d).sub(/^\\\*\\\./, '')
-    end.join('|') + ')$'
-  ).freeze
-  
-  ALLOWED_DOMAIN_PREFIXES = Hash[
-    TLD_NAMES.select do |d|
-      d.match(/^\!/)
-    end.collect do |d|
-      [ d.sub(/^\!/, ''), true ]
-    end
-  ].freeze
-
-  DOMAIN_PREFIX_SPEC = Regexp.new(
-    '^(?:[^\.]+\.)*?(([^\.]+)\.(' + TLD_NAMES.collect do |d|
-      Regexp.escape(d).sub(/^\\\*\\\./, '[^\.]+\.')
-    end.join('|') + '))$'
-  ).freeze
   
   NONPUBLIC_TLD = {
     'local' => true
@@ -69,43 +84,66 @@ module DomainPrefix
     domain and domain.downcase
   end
 
+  def public_tld?(tld)
+    !NONPUBLIC_TLD.key?(tld)
+  end
+  
   def registered_domain(domain)
-    m = DOMAIN_PREFIX_SPEC.match(rfc3492_canonical_domain(domain))
+    return unless (domain)
     
-    return unless (m)
+    components = rfc3492_canonical_domain(domain).split(SEPARATOR)
+    
+    return if (components.empty? or components.find(&:empty?))
 
-    domain = m[1]
-    suffix = m[3]
+    return unless (public_tld?(components.last))
+
+    prefix = TLD_TREE.follow(components)
     
-    return if (NONPUBLIC_TLD[suffix])
-    return if (PREFIX_SPEC.match(domain) and !ALLOWED_DOMAIN_PREFIXES[domain])
+    return unless (prefix)
     
-    domain
+    offset = prefix.length + 1
+
+    if (offset > components.length)
+      return
+    end
+
+    components[-offset, offset].join(SEPARATOR)
   end
 
   def public_suffix(domain)
-    m = DOMAIN_PREFIX_SPEC.match(rfc3492_canonical_domain(domain))
+    return unless (domain)
+
+    components = rfc3492_canonical_domain(domain).split(SEPARATOR)
+
+    return if (components.empty? or components.find(&:empty?))
+
+    return unless (public_tld?(components.last))
+
+    prefix = TLD_TREE.follow(components)
     
-    return unless (m)
+    return unless (prefix)
     
-    domain = m[1]
-    suffix = m[3]
-    
-    return if (PREFIX_SPEC.match(domain) and !ALLOWED_DOMAIN_PREFIXES[domain])
-    
-    suffix
+    offset = prefix.length
+
+    if (offset >= components.length)
+      return
+    end
+
+    components[-offset, offset].join(SEPARATOR)
   end
 
   def tld(domain)
     suffix = public_suffix(rfc3492_canonical_domain(domain))
     
-    suffix and suffix.split(/\./).last
+    suffix and suffix.split(SEPARATOR).last
   end
   
   def name(domain)
-    m = DOMAIN_PREFIX_SPEC.match(rfc3492_canonical_domain(domain))
-    
-    m and m[2]
+    if (domain = registered_domain(domain))
+      domain.split(SEPARATOR).first
+    else
+      nil
+    end
   end
   
   extend self
