@@ -7,11 +7,13 @@ module DomainPrefix
     def insert(path)
       leaf = path.split(SEPARATOR).reverse.inject(self) do |tree, component|
         # Seeds an element into the tree structure by referencing it
-        tree[component] ||= Tree.new
+        tree[component.sub(/^!/, '')] ||= Tree.new
       end
 
-      unless (path.match(/^\!/))
-        leaf[:allowed] = true
+      if (path.match(/^[\!]/))
+        leaf[:required] = 0
+      else
+        leaf[:required] = 1
       end
       
       self
@@ -19,51 +21,41 @@ module DomainPrefix
     
     def follow(path)
       path = path.to_s.split(SEPARATOR) unless (path.is_a?(Array))
-      prefix = [ ]
-      tree = self
+      path = path.reverse
 
-      wildcard_match = false
-      
-      path.reverse.each do |component|
-        if (!component or component.empty?)
-          return
-        end
+      index = traverse(path)
 
-        if (tree["*"] and tree["*"][:allowed])
-          # This component is REQUIRED and IS considered part of the actual
-          # prefix.
+      index and index <= path.length and path[0, index].reverse
+    end
 
-          wildcard_match = prefix.dup
-          wildcard_match << component
-        end
+  protected
+    def traverse(path, index = 0)
+      component = path[index]
 
-        if (tree.key?(component))
-          # This component is REQUIRED and IS considered part of the actual
-          # prefix.
-          prefix.unshift(component)
-
-          # Further testing is necessary to determine if a more specific
-          # match can be made.
-          tree = tree[component]
-        elsif (tree.key?("!#{component}"))
-          # This component is REQUIRED but IS NOT considered part of the
-          # actual prefix.
-          return prefix
-        elsif (tree[:allowed])
-          # If no specific match can be found, then testing is done.
-          return prefix.empty? ? nil : prefix
-        else
-          break
-        end
+      unless (component)
+        return self[:required] == 0 ? index : nil
       end
 
-      if (wildcard_match)
-        # If a '*'-based rule was triggered, return that path instead.
-        return wildcard_match
+      named_branch = self[component]
+
+      if (named_branch)
+        result = named_branch.traverse(path, index + 1)
+
+        return result if (result)
       end
+
+      wildcard_branch = self["*"]
       
-      # Getting here means the matching process failed because path was not
-      # sufficiently long.
+      if (wildcard_branch)
+        result = wildcard_branch.traverse(path, index + 1)
+
+        return result if (result)
+      end
+
+      if (!named_branch and !wildcard_branch and self[:required])
+        return index + self[:required]
+      end
+
       return
     end
   end
@@ -106,24 +98,17 @@ module DomainPrefix
       return unless (self.public_tld?(components.last))
     end
 
-    prefix = TLD_TREE.follow(components)
+    suffix = TLD_TREE.follow(components)
 
-    unless (prefix)
-      if (rules == :relaxed and components.length >= 2)
-        puts components.inspect
+    unless (suffix)
+      if (rules == :relaxed and components.length >= 2 and !TLD_TREE[components[-1]])
         return components.last(2).join(SEPARATOR)
       else
         return
       end
     end
     
-    offset = prefix.length + 1
-
-    if (offset > components.length)
-      return
-    end
-
-    components[-offset, offset].join(SEPARATOR)
+    suffix.join(SEPARATOR)
   end
 
   def public_suffix(domain)
@@ -135,17 +120,13 @@ module DomainPrefix
 
     return unless (public_tld?(components.last))
 
-    prefix = TLD_TREE.follow(components)
+    suffix = TLD_TREE.follow(components)
     
-    return unless (prefix)
-    
-    offset = prefix.length
+    return unless (suffix)
 
-    if (offset >= components.length)
-      return
-    end
+    suffix.shift
 
-    components[-offset, offset].join(SEPARATOR)
+    suffix.join(SEPARATOR)
   end
 
   def tld(domain)

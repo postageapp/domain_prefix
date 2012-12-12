@@ -9,7 +9,6 @@ class TestDomainPrefix < Test::Unit::TestCase
       'com' => [ nil, nil ],
       'example.com' => %w[ example.com com ],
       'uk.com' => [ nil, nil ],
-      'example.net.uk' => %w[ example.net.uk net.uk ],
       'example.uk.com' => %w[ example.uk.com uk.com ],
       'example.ca' =>  %w[ example.ca ca ],
       'example.on.ca' =>  %w[ example.on.ca on.ca ],
