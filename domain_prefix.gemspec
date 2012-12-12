@@ -5,21 +5,21 @@
 
 Gem::Specification.new do |s|
   s.name = "domain_prefix"
-  s.version = "0.1.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["tadman"]
-  s.date = "2012-02-03"
+  s.date = "2012-12-12"
   s.description = "A library to extract information about top-level domain and registered name from generic and international domain names"
   s.email = "github@tadman.ca"
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
     "LICENSE",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "data/effective_tld_names.dat",
@@ -28,11 +28,11 @@ Gem::Specification.new do |s|
     "test/helper.rb",
     "test/sample/README",
     "test/sample/test.txt",
-    "test/test_tldifier.rb"
+    "test/test_domain_prefix.rb"
   ]
   s.homepage = "http://github.com/twg/domain_prefix"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.11"
+  s.rubygems_version = "1.8.24"
   s.summary = "Domain Prefix Extraction Library"
 
   if s.respond_to? :specification_version then
