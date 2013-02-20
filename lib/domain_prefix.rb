@@ -62,9 +62,13 @@ module DomainPrefix
   
   TLDIFIER_SOURCE_FILE = File.expand_path(File.join('..', 'data', 'effective_tld_names.dat'), File.dirname(__FILE__))
 
-  TLD_SET = File.read(TLDIFIER_SOURCE_FILE).split(/\n/).collect do |line|
-    line.sub(%r[//.*], '').sub(/\s+$/, '')
-  end.reject(&:empty?).freeze
+  TLD_SET = begin
+    File.open(TLDIFIER_SOURCE_FILE, 'r:UTF-8') do |f|
+      f.read.split(/\n/).collect do |line|
+        line.sub(%r[//.*], '').sub(/\s+$/, '')
+      end.reject(&:empty?).freeze
+    end
+  end
   
   TLD_NAMES = TLD_SET.sort_by do |d|
     [ -d.length, d ]
