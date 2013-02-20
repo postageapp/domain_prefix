@@ -1071,13 +1071,14 @@ tozsde.hu
 utazas.hu
 video.hu
 
-// id : http://en.wikipedia.org/wiki/.id
-// see also: https://register.pandi.or.id/
+// id : https://register.pandi.or.id/
 id
 ac.id
+biz.id
 co.id
 go.id
 mil.id
+my.id
 net.id
 or.id
 sch.id
@@ -5367,6 +5368,7 @@ belau.pw
 
 // py : http://www.nic.py/pautas.html#seccion_9
 // Confirmed by registry 2012-10-03
+py
 com.py
 coop.py
 edu.py
@@ -5374,8 +5376,6 @@ gov.py
 mil.py
 net.py
 org.py
-!nic.py
-!una.py
 
 // qa : http://domains.qa/en/
 qa
@@ -5904,16 +5904,20 @@ club.tw
 組織.tw
 商業.tw
 
-// tz : http://en.wikipedia.org/wiki/.tz
-// Submitted by registry <randy@psg.com> 2008-06-17
-// Updated from http://www.tznic.or.tz/index.php/domains.html 2010-10-25
+// tz : http://www.tznic.or.tz/index.php/domains
+// Confirmed by registry <manager@tznic.or.tz> 2013-01-22
 ac.tz
 co.tz
 go.tz
+hotel.tz
+info.tz
+me.tz
 mil.tz
+mobi.tz
 ne.tz
 or.tz
 sc.tz
+tv.tz
 
 // ua : https://hostmaster.ua/policy/?ua
 // Submitted by registry <dk@cctld.ua> 2012-04-27
