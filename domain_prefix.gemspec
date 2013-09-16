@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "domain_prefix"
-  s.version = "0.2.2.3"
+  s.version = "0.2.2.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["tadman"]
-  s.date = "2013-07-29"
+  s.date = "2013-09-16"
   s.description = "A library to extract information about top-level domain and registered name from generic and international domain names"
   s.email = "github@tadman.ca"
   s.extra_rdoc_files = [
