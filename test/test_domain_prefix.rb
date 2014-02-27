@@ -2,6 +2,7 @@ require_relative 'helper'
 
 class TestDomainPrefix < Test::Unit::TestCase
   def test_initialization
+    assert DomainPrefix::TLD_SET.length > 0
   end
   
   def test_examples
@@ -15,7 +16,7 @@ class TestDomainPrefix < Test::Unit::TestCase
       'example.gc.ca' =>  %w[ example.gc.ca gc.ca ],
       'example.co.uk' =>  %w[ example.co.uk co.uk ],
       'example.com.au' => %w[ example.com.au com.au ],
-      'example.au' => [ nil, nil ],
+      'example.au' => %w[ example.au au ],
       'example.bar.jp' => %w[ bar.jp jp ],
       'example.bar.hokkaido.jp' =>%w[ bar.hokkaido.jp hokkaido.jp ],
       'example.metro.tokyo.jp' => %w[ metro.tokyo.jp tokyo.jp ]
