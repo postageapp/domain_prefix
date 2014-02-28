@@ -16,5 +16,5 @@ The test case data is pulled from a separate source:
 
 ## Copyright
 
-Copyright (c) 2009-2012 Scott Tadman, The Working Group Inc.
+Copyright (c) 2009-2014 Scott Tadman, The Working Group Inc.
 See LICENSE for details.

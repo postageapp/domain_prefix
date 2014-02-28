@@ -1,8 +1,11 @@
 require 'rubygems'
 require 'rake'
 
+require 'bundler/setup'
+
 begin
   require 'jeweler'
+
   Jeweler::Tasks.new do |gem|
     gem.name = "domain_prefix"
     gem.summary = "Domain Prefix Extraction Library"
@@ -10,7 +13,9 @@ begin
     gem.email = "github@tadman.ca"
     gem.homepage = "http://github.com/twg/domain_prefix"
     gem.authors = %w[ tadman ]
+    gem.add_dependency 'simpleidn'
   end
+
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
@@ -30,6 +35,12 @@ namespace :domain_prefix do
     
     open("http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1") do |source|
       open(File.expand_path(File.join('data', 'effective_tld_names.dat'), File.dirname(__FILE__)), 'w') do |dest|
+        dest.write(source.read)
+      end
+    end
+
+    open("http://mxr.mozilla.org/mozilla-central/source/netwerk/test/unit/data/test_psl.txt?raw=1") do |source|
+      open(File.expand_path(File.join('test', 'sample', 'test.txt'), File.dirname(__FILE__)), 'w') do |dest|
         dest.write(source.read)
       end
     end
