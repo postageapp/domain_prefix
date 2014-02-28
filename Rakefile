@@ -13,7 +13,6 @@ begin
     gem.email = "github@tadman.ca"
     gem.homepage = "http://github.com/twg/domain_prefix"
     gem.authors = %w[ tadman ]
-    gem.add_dependency 'simpleidn'
   end
 
   Jeweler::GemcutterTasks.new
