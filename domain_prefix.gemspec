@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["tadman"]
-  s.date = "2014-03-20"
+  s.date = "2014-04-21"
   s.description = "A library to extract information about top-level domain and registered name from generic and international domain names"
   s.email = "github@tadman.ca"
   s.extra_rdoc_files = [
