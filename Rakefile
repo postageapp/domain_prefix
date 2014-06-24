@@ -45,3 +45,5 @@ namespace :domain_prefix do
     end
   end
 end
+
+task :default => [ :test ]
