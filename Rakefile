@@ -32,7 +32,7 @@ namespace :domain_prefix do
   task :update do
     require 'open-uri'
     
-    open("http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1") do |source|
+    open("https://publicsuffix.org/list/effective_tld_names.dat") do |source|
       open(File.expand_path(File.join('data', 'effective_tld_names.dat'), File.dirname(__FILE__)), 'w') do |dest|
         dest.write(source.read)
       end
