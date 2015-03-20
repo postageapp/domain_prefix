@@ -10,3 +10,4 @@ rdoc
 pkg
 
 *.gem
+/*.lock
