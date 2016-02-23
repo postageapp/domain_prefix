@@ -32,13 +32,13 @@ namespace :domain_prefix do
   task :update do
     require 'open-uri'
     
-    open("https://publicsuffix.org/list/effective_tld_names.dat") do |source|
+    open("https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat") do |source|
       open(File.expand_path(File.join('data', 'effective_tld_names.dat'), File.dirname(__FILE__)), 'w') do |dest|
         dest.write(source.read)
       end
     end
 
-    open("http://mxr.mozilla.org/mozilla-central/source/netwerk/test/unit/data/test_psl.txt?raw=1") do |source|
+    open("https://raw.githubusercontent.com/publicsuffix/list/master/tests/test_psl.txt") do |source|
       open(File.expand_path(File.join('test', 'sample', 'test.txt'), File.dirname(__FILE__)), 'w') do |dest|
         dest.write(source.read)
       end
