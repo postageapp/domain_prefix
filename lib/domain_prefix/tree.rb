@@ -1,4 +1,8 @@
+require 'simpleidn'
+
 class DomainPrefix::Tree < Hash
+  # == Instance Methods =====================================================
+  
   def insert(path)
     components = path.sub(/^!/, '').split(DomainPrefix::SEPARATOR).reverse
 

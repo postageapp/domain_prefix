@@ -1,8 +1,11 @@
 # encoding: UTF-8
-require 'simpleidn'
 
 module DomainPrefix
+  # == Dependencies =========================================================
+
   require 'domain_prefix/tree'
+  
+  # == Constants ============================================================
 
   SEPARATOR = '.'.freeze
 
@@ -27,6 +30,8 @@ module DomainPrefix
   NONPUBLIC_TLD = {
     'local' => true
   }.freeze
+
+  # == Module Methods =======================================================
   
   # Returns a cleaned up, canonical version of a domain name.
   def rfc3492_canonical_domain(domain)
