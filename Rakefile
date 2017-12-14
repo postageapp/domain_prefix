@@ -12,7 +12,7 @@ begin
     gem.description = "A library to extract information about top-level domain and registered name from generic and international domain names"
     gem.email = "github@tadman.ca"
     gem.homepage = "http://github.com/twg/domain_prefix"
-    gem.authors = %w[ tadman ]
+    gem.authors = [ 'Scott Tadman' ]
   end
 
   Jeweler::GemcutterTasks.new
@@ -47,4 +47,4 @@ namespace :domain_prefix do
   end
 end
 
-task :default => [ :test ]
+task default: :test
