@@ -4,20 +4,20 @@ require 'rake'
 require 'bundler/setup'
 
 begin
-  require 'jeweler'
+  require 'juwelier'
 
-  Jeweler::Tasks.new do |gem|
+  Juwelier::Tasks.new do |gem|
     gem.name = "domain_prefix"
     gem.summary = "Domain Prefix Extraction Library"
     gem.description = "A library to extract information about top-level domain and registered name from generic and international domain names"
-    gem.email = "github@tadman.ca"
-    gem.homepage = "http://github.com/twg/domain_prefix"
+    gem.email = "tadman@postageapp.com"
+    gem.homepage = "http://github.com/postageapp/domain_prefix"
     gem.authors = [ 'Scott Tadman' ]
   end
 
-  Jeweler::GemcutterTasks.new
+  Juwelier::GemcutterTasks.new
 rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+  puts "Juwelier (or a dependency) not available. Install it with: gem install Juwelier"
 end
 
 require 'rake/testtask'
