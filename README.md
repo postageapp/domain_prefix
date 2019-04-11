@@ -54,5 +54,5 @@ project is included in this gem.
 
 ## Copyright
 
-Copyright (c) 2009-2017 Scott Tadman, The Working Group Inc.
-See LICENSE for details.
+Copyright (c) 2009-2017 Scott Tadman, PostageApp Ltd.
+See [LICENSE](LICENSE.txt) for details.
