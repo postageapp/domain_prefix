@@ -8,22 +8,22 @@ and can be used to assert if a given domain name is valid or not.
 The `registered_domain` method returns the name of the registered domain
 associated witha given hostname, or Fully Qualified Domain Name (FQDN):
 
-   DomainPrefix.registered_domain('test.example.com')
-   # => 'example.com'
-   DomainPrefix.registered_domain('test.example.ca')
-   # => 'example.ca'
-   DomainPrefix.registered_domain('test.example.co.uk')
-   # => 'example.co.uk'
+    DomainPrefix.registered_domain('test.example.com')
+    # => 'example.com'
+    DomainPrefix.registered_domain('test.example.ca')
+    # => 'example.ca'
+    DomainPrefix.registered_domain('test.example.co.uk')
+    # => 'example.co.uk'
 
 The `public_suffix` method returns the suffix into which this domain is
 registered:
 
-   DomainPrefix.public_suffix('test.example.com')
-   # => 'com'
-   DomainPrefix.public_suffix('test.example.ca')
-   # => 'ca'
-   DomainPrefix.public_suffix('test.example.co.uk')
-   # => 'co.uk'
+    DomainPrefix.public_suffix('test.example.com')
+    # => 'com'
+    DomainPrefix.public_suffix('test.example.ca')
+    # => 'ca'
+    DomainPrefix.public_suffix('test.example.co.uk')
+    # => 'co.uk'
 
 Note that the "public suffix" component of a domain can be quite lengthy
 depending on the context. Some countries have three or more levels of structure
@@ -54,5 +54,5 @@ project is included in this gem.
 
 ## Copyright
 
-Copyright (c) 2009-2017 Scott Tadman, PostageApp Ltd.
+Copyright (c) 2009-2019 Scott Tadman, PostageApp Ltd.
 See [LICENSE](LICENSE.txt) for details.
