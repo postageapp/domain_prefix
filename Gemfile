@@ -6,5 +6,5 @@ gem 'json'
 
 group :development, :test do
   gem 'test-unit'
-  gem 'jeweler'
+  gem 'juwelier'
 end
